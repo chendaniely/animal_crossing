@@ -15,4 +15,4 @@ If you don't know your way around git, click the green "Clone or download" butto
 
 ## Teaching
 
-This could be a decent teaching dataset cleaning data ... or it just helps us pay off our depts to Tom Nook, who knows.
+This could be a decent teaching dataset for cleaning data ... or it just helps us pay off our debts to Tom Nook, who knows.
