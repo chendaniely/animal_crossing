@@ -109,7 +109,7 @@ wiki_urls <- list(
 )
 
 # write out the list into json file
-jsonlite::write_json(wiki_urls, here::here("data", "final", "urls.json"), pretty = TRUE, auto_unbox = TRUE)
+jsonlite::write_json(wiki_urls, here::here("data", "original", "urls.json"), pretty = TRUE, auto_unbox = TRUE)
 
 # save the html files from the url using  phantomjs
 purrr::walk(wiki_urls, run_phantom_script_mapper)

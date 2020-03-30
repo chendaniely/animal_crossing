@@ -23,7 +23,7 @@ extract_table <- function(ac_page_info) {
     return(df)
 }
 
-url_data <- jsonlite::read_json(here::here("data", "final", "urls.json"))
+url_data <- jsonlite::read_json(here::here("data", "original", "urls.json"))
 
 #ac_page_info <- url_data[[1]]
 
@@ -34,7 +34,7 @@ purrr::transpose(acnh_data)
 df_names <- purrr::map_chr(url_data, ~ .$name)
 
 purrr::walk2(purrr::transpose(acnh_data)$result,
-             here::here("data", "final", glue::glue("{df_names}.tsv")),
+             here::here("data", "original", glue::glue("{df_names}.tsv")),
              readr::write_tsv)
 
 purrr::walk(acnh_data, head, n = 1)
