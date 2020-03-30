@@ -58,5 +58,10 @@
     "name": "acnh_bugs_s",
     "url": "https://animalcrossing.fandom.com/wiki/Bugs_(New_Horizons)#Southern%20Hemisphere",
     "selector": "div.tabbertab:nth-child(1) > table:nth-child(2) > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(1) > table:nth-child(1)"
+  },
+  "acnh_bugs_s.1": {
+    "name": "acnh_villagers",
+    "url": "https://animalcrossing.fandom.com/wiki/Villager_list_(New_Horizons)",
+    "selector": "table.roundy:nth-child(1)"
   }
 }
