@@ -5,4 +5,4 @@ data_raw:
 
 .PHONY: data_clean
 data_clean:
-	Rscript scripts/acnh/03-clean_data.R
+	Rscript scripts/acnh/03-01-clean-diy-material_size.R
