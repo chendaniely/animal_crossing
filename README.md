@@ -18,3 +18,10 @@ If you don't know your way around git, click the green "Clone or download" butto
 ## Teaching
 
 This could be a decent teaching dataset for cleaning data ... or it just helps us pay off our debts to Tom Nook, who knows.
+
+## Packages
+
+This repository contains the repo for the R package as a Git submodule.
+
+- Link to the github repository: https://github.com/chendaniely/animalcrossing
+- The submodule is found under `pkg/R`
