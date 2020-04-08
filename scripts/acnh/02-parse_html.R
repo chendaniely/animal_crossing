@@ -37,4 +37,11 @@ purrr::walk2(purrr::transpose(acnh_data)$result,
              here::here("data", "original", glue::glue("{df_names}.tsv")),
              readr::write_tsv)
 
-purrr::walk(acnh_data, head, n = 1)
+purrr::walk2(purrr::transpose(acnh_data)$result,
+             here::here("pkg", "R", "animalcrossing", "data",
+                        glue::glue("{df_names}.RData")),
+             function(x, y) {
+                 var_name <- fs::path_ext_remove(fs::path_file(y))
+                 assign(var_name, x)
+                 save(list = var_name, file=y)
+             })

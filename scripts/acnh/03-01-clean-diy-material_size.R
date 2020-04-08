@@ -71,10 +71,18 @@ params <- tibble::tibble(input_file_pth = diy_data_pths) %>%
         output_file_pth = stringr::str_replace(diy_data_pths, "original", "final"),
         clean_fxn = dplyr::case_when(
             stringr::str_detect(output_file_pth, "acnh_diy_wallfloorrug") ~ "m",
-            TRUE ~ "m+s")
+            TRUE ~ "m+s"),
+        rds_pth = here::here("pkg", "R", "animalcrossing", "data",
+            glue::glue("{fs::path_ext_remove(fs::path_file(diy_data_pths))}.RData"))
     )
 params
 
 cleaned_dfs <- purrr::map2(params$input_file_pth, params$clean_fxn, clean_df)
 
 purrr::walk2(cleaned_dfs, params$output_file_pth, readr::write_tsv)
+purrr::walk2(cleaned_dfs, params$rds_pth,
+             function(x, y) {
+                 var_name <- fs::path_ext_remove(fs::path_file(y))
+                 assign(var_name, x)
+                 save(list = var_name, file=y)
+             })
