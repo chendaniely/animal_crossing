@@ -7,7 +7,7 @@ The data in the `data/original` folder are the raw tables from the website.
 More processing can be done to get information like "size of furniture" and "materials for diy builds".
 This information all lies within the raw html part of the respetive columns, I just have not parsed them yet.
 
-**If you don't want to process the html strings for the materials and size columns, I've cleaned them for you in the `data/final` folder**
+**If you don't want to process the html strings for the materials and size columns, I've cleaned them for you in the `data/final/without_raw_html` folder**
 
 For the `acnh_bugs_*` and `acnh_fish_*` datasets the `n` and `s` suffix denotes the norther and southern hemisphere, respectively.
 
