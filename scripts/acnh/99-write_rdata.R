@@ -17,7 +17,9 @@ dfs <- purrr::map(
 
 rds_pth <- here::here("pkg", "R", "animalcrossing", "data", glue::glue("{dat_f}.RData"))
 
-purrr::walk2(dfs, rds_pth,
+purrr::walk2(cleaned_dfs, params$rds_pth,
              function(x, y) {
-                 save(x, file = y)
+                 var_name <- fs::path_ext_remove(fs::path_file(y))
+                 assign(var_name, x)
+                 save(list = var_name, file=y)
              })
