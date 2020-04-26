@@ -4,6 +4,16 @@ library(glue)
 library(here)
 library(httr)
 
+get_response <- function(url) {
+  response <- httr::GET(url)
+  stat_cde <- httr::status_code(response)
+  if (stat_cde != 200) {
+    stop(glue::glue("Expected status 200, got {stat_cde}"))
+  }
+
+  return(response)
+}
+
 #' Generates the javascript code to be run by phantomjs
 #' This will generate the html if it is dynamically generated using javascript
 phantomjs_html <- function(url, name) {
@@ -29,11 +39,7 @@ page.open('<<url>>', function (status) {
 
 #' Creates a tempfile of the javascript code and calls phantomjs to run it
 run_phantom_script <- function(url, name) {
-    response <- httr::GET(url)
-    stat_cde <- httr::status_code(response)
-    if (stat_cde != 200) {
-        stop(glue::glue("Expected status 200, got {stat_cde}"))
-    }
+    response <- get_response(ur)
 
     temp <- tempfile()
     on.exit(unlink(temp))
