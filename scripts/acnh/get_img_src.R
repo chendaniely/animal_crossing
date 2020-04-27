@@ -1,10 +1,14 @@
 get_img_src <- function(image_html_text) {
     # using rvest and xml2 becuase i don't want to deal with regex
-    if (is.na(image_html_text)){return(NA)}
+    if (is.na(image_html_text)) {return(NA)}
 
     # 50px acnh_diy_wallfloorrug
     # Unknown bugs
-    if (image_html_text %in% c('50px', 'Unknown')) {return(NA)}
+    if (image_html_text %in% c('50px',
+                               'Unknown',
+                               '/wiki/Special:Upload?wpDestFile=NH-Wedding_fence.png')) {
+        return(NA)
+    }
 
     return(
         image_html_text %>%

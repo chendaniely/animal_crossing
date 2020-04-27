@@ -8,6 +8,9 @@ library(janitor)
 library(dplyr)
 library(purrr)
 
+
+## functions ------
+
 #' extracts the dimensions of the object from the img html tag
 #' Example img tag code:
 #' <img src="https://vignette.wikia.nocookie.net/animalcrossing/images/d/d7/NH1.0x1.0sq.jpg/revision/latest?cb=20200324214412" alt="NH1.0x1.0sq" class="" data-image-key="NH1.0x1.0sq.jpg" data-image-name="NH1.0x1.0sq.jpg" width="31" height="31" >
@@ -28,17 +31,18 @@ testthat::expect_equal(
 #' Example text and code for materials:
 #' 8x <img src="https://vignette.wikia.nocookie.net/animalcrossing/images/f/f2/NH-softwood-icon.png/revision/latest/scale-to-width-down/18?cb=20200328195710" alt="NH-softwood-icon" class="" data-image-key="NH-softwood-icon.png" data-image-name="NH-softwood-icon.png" width="18" height="18" >softwood 3x <img src="https://vignette.wikia.nocookie.net/animalcrossing/images/f/fa/NH-iron_nugget-icon.png/revision/latest/scale-to-width-down/18?cb=20200328195115" alt="NH-iron nugget-icon" class="" data-image-key="NH-iron_nugget-icon.png" data-image-name="NH-iron nugget-icon.png" width="18" height="18" >iron nugget
 parse_materials <- function(materials_string) {
-    rm_img <- stringr::str_remove_all(string = materials_string,
-                                      pattern = "<img.*?>")
-    comma_delimit <- stringr::str_replace_all(string = rm_img,
-                                              pattern = "\\s+(?=\\d+x)", # look for the space before a numberx, e.g., 3x
-                                              replacement = ", ")
+    counts <- stringr::str_extract_all(materials_string, '[:digit:]+')[[1]]
+    materials <- stringr::str_split(materials_string, '[:digit:]+x[:space:]*')[[1]][-1]
+
+    comma_delimit <- paste(counts, 'x', materials, collapse = ', ')
+
     return(comma_delimit)
 }
 
+
 testthat::expect_equal(
-    parse_materials('8x <img src="https://vignette.wikia.nocookie.net/animalcrossing/images/f/f2/NH-softwood-icon.png/revision/latest/scale-to-width-down/18?cb=20200328195710" alt="NH-softwood-icon" class="" data-image-key="NH-softwood-icon.png" data-image-name="NH-softwood-icon.png" width="18" height="18" >softwood 3x <img src="https://vignette.wikia.nocookie.net/animalcrossing/images/f/fa/NH-iron_nugget-icon.png/revision/latest/scale-to-width-down/18?cb=20200328195115" alt="NH-iron nugget-icon" class="" data-image-key="NH-iron_nugget-icon.png" data-image-name="NH-iron nugget-icon.png" width="18" height="18" >iron nugget'),
-        '8x softwood, 3x iron nugget'
+    parse_materials('8x softwood3x iron nugget'),
+        '8 x softwood, 3 x iron nugget'
 )
 
 clean_df <- function(input_pth, clean_fxn) {
@@ -66,23 +70,26 @@ clean_df <- function(input_pth, clean_fxn) {
 
 diy_data_pths <- fs::dir_ls(here::here("data", "original"), glob = "*diy*")
 
+# the diy_villager is a special table that isn't like the other diy tables
+diy_data_pths <- diy_data_pths[!stringr::str_detect(diy_data_pths, '_diy_villager')]
+
 params <- tibble::tibble(input_file_pth = diy_data_pths) %>%
     dplyr::mutate(
-        output_file_pth = stringr::str_replace(diy_data_pths, "original", "final"),
+        output_file_pth = stringr::str_replace(diy_data_pths, "original", "processed"),
         clean_fxn = dplyr::case_when(
             stringr::str_detect(output_file_pth, "acnh_diy_wallfloorrug") ~ "m",
-            TRUE ~ "m+s"),
-        rds_pth = here::here("pkg", "R", "animalcrossing", "data",
-            glue::glue("{fs::path_ext_remove(fs::path_file(diy_data_pths))}.RData"))
+            TRUE ~ "m+s")
+        # rds_pth = here::here("pkg", "R", "animalcrossing", "data",
+        #     glue::glue("{fs::path_ext_remove(fs::path_file(diy_data_pths))}.RData"))
     )
 params
 
 cleaned_dfs <- purrr::map2(params$input_file_pth, params$clean_fxn, clean_df)
 
 purrr::walk2(cleaned_dfs, params$output_file_pth, readr::write_tsv)
-purrr::walk2(cleaned_dfs, params$rds_pth,
-             function(x, y) {
-                 var_name <- fs::path_ext_remove(fs::path_file(y))
-                 assign(var_name, x)
-                 save(list = var_name, file=y)
-             })
+# purrr::walk2(cleaned_dfs, params$rds_pth,
+#              function(x, y) {
+#                  var_name <- fs::path_ext_remove(fs::path_file(y))
+#                  assign(var_name, x)
+#                  save(list = var_name, file=y)
+#              })
