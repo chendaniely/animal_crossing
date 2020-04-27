@@ -1,53 +1,130 @@
 library(jsonlite)
+library(here)
 
 wiki_urls <- list(
-  acnh_crafting = list(
-    name = "acnh_crafting",
+  acnh_crafting_yearly = list(
+    name = "acnh_crafting_yearly",
     url = "https://animalcrossing.fandom.com/wiki/Crafting_materials_(New_Horizons)",
     mode = "web",
-    selector = ".article-table"
+    selector = "",
+    xpath = "/html/body/div[2]/section/div[2]/article/div/div[1]/div[2]/table[2]",
+    image = list(
+      selector = ".article-table:nth-child(10) td:nth-child(2)"
+    )
+  ),
+  acnh_crafting_seasonal = list(
+    name = "acnh_crafting_seasonal",
+    url = "https://animalcrossing.fandom.com/wiki/Crafting_materials_(New_Horizons)",
+    mode = "web",
+    selector = "",
+    xpath = "/html/body/div[2]/section/div[2]/article/div/div[1]/div[2]/table[3]",
+    image = list(
+      selector = ".article-table:nth-child(12) td:nth-child(2)"
+    )
   ),
   acnh_diy_tools = list(
     name = "acnh_diy_tools",
-    url = "https://animalcrossing.fandom.com/wiki/DIY_recipes",
+    url = "https://animalcrossing.fandom.com/wiki/DIY_recipes/Tools",
     mode = "web",
-    selector = "table.article-table:nth-child(14)"
+    selector = ".article-table",
+    image = list(
+      selector = "td:nth-child(2)"
+    ),
+    size = list(
+      selector = "td:nth-child(4)"
+    )
   ),
   acnh_diy_housewares = list(
     name = "acnh_diy_housewares",
-    url = "https://animalcrossing.fandom.com/wiki/DIY_recipes",
+    url = "https://animalcrossing.fandom.com/wiki/DIY_recipes/Housewares",
     mode = "web",
-    selector = "table.article-table:nth-child(16)"
+    selector = ".article-table",
+    image = list(
+      selector = "td:nth-child(2)"
+    ),
+    size = list(
+      selector = "td:nth-child(4)"
+    )
   ),
   acnh_diy_misc = list(
     name = "acnh_diy_misc",
-    url = "https://animalcrossing.fandom.com/wiki/DIY_recipes",
+    url = "https://animalcrossing.fandom.com/wiki/DIY_recipes/Miscellaneous",
     mode = "web",
-    selector = "table.article-table:nth-child(18)"
+    selector = ".article-table",
+    image = list(
+      selector = "td:nth-child(2)"
+    ),
+    size = list(
+      selector = "td:nth-child(4)"
+    )
   ),
   acnh_diy_wallmount = list(
     name = "acnh_diy_wallmount",
-    url = "https://animalcrossing.fandom.com/wiki/DIY_recipes",
+    url = "https://animalcrossing.fandom.com/wiki/DIY_recipes/Wall-mounted",
     mode = "web",
-    selector = "table.article-table:nth-child(20)"
+    selector = ".article-table",
+    image = list(
+      selector = "td:nth-child(2)"
+    ),
+    size = list(
+      selector = "td:nth-child(4)"
+    )
   ),
   acnh_diy_wallfloorrug = list(
     name = "acnh_diy_wallfloorrug",
-    url = "https://animalcrossing.fandom.com/wiki/DIY_recipes",
+    url = "https://animalcrossing.fandom.com/wiki/DIY_recipes/Wallpaper,_rugs_and_flooring",
     mode = "web",
-    selector = "table.article-table:nth-child(22)"
+    selector = ".article-table",
+    image = list(
+      selector = "td:nth-child(2)"
+    ),
+    size = list(
+      selector = "td:nth-child(4)"
+    )
   ),
   acnh_diy_equipment = list(
     name = "acnh_diy_equipment",
-    url = "https://animalcrossing.fandom.com/wiki/DIY_recipes",
+    url = "https://animalcrossing.fandom.com/wiki/DIY_recipes/Equipment",
     mode = "web",
-    selector = "table.article-table:nth-child(24)"
+    selector = ".article-table",
+    image = list(
+      selector = "td:nth-child(2)"
+    ),
+    size = list(
+      selector = "td:nth-child(4)"
+    )
   ),
   acnh_diy_other = list(
     name = "acnh_diy_other",
+    url = "https://animalcrossing.fandom.com/wiki/DIY_recipes/Other",
+    mode = "web",
+    selector = ".article-table",
+    image = list(
+      selector = "td:nth-child(2)"
+    ),
+    size = list(
+      selector = "td:nth-child(4)"
+    )
+  ),
+  acnh_diy_unconfirmed = list(
+    name = "acnh_diy_unconfirmed",
     url = "https://animalcrossing.fandom.com/wiki/DIY_recipes",
     mode = "web",
-    selector = "table.article-table:nth-child(26)"
+    selector = "",
+    xpath = "/html/body/div[2]/section/div[2]/article/div/div[1]/div[2]/table[1]",
+    image = list(
+      selector = ".sortable td:nth-child(2)"
+    ),
+    size = list(
+      selector = ".sortable td:nth-child(4)"
+    )
+  ),
+  acnh_diy_villager = list(
+    name = "acnh_diy_villager",
+    url = "https://animalcrossing.fandom.com/wiki/DIY_recipes",
+    mode = "web",
+    selector = "",
+    xpath = "/html/body/div[2]/section/div[2]/article/div/div[1]/div[2]/table[2]"
   ),
   acnh_fish_n = list(
     name = "acnh_fish_n",
