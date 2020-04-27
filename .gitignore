@@ -1,4 +1,6 @@
 data/
+*.Rcheck
+*.tar.gz
 
 # History files
 .Rhistory
