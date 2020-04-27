@@ -154,7 +154,10 @@ wiki_urls <- list(
     name = "acnh_villagers",
     url = "https://animalcrossing.fandom.com/wiki/Villager_list_(New_Horizons)",
     mode = "web",
-    selector = "table.roundy:nth-child(1)"
+    selector = "table.roundy:nth-child(1)",
+    image = list(
+      selector = ".sortable td:nth-child(2)"
+    )
   )
 )
 

@@ -60,7 +60,7 @@ run_phantom_script <- function(url, name) {
 run_web_phantom <- function(url_info) {
 
   name <- url_info$name
-  save_pth <- here::here("data", "processed", "html", glue::glue("{name}.html"))
+  save_pth <- here::here("data", "original", "html", glue::glue("{name}.html"))
 
   if (fs::file_exists(save_pth)) { # if the file exists don't do anything
     return(NULL)

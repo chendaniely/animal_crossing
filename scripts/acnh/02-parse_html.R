@@ -8,7 +8,7 @@ library(readr)
 
 ## funtions -----
 get_html_pth <- function(name) {
- return(here::here("data", "processed", "html", glue::glue("{name}.html")))
+ return(here::here("data", "original", "html", glue::glue("{name}.html")))
 }
 
 extract_table_node <- function(ac_page_info) {
@@ -85,12 +85,11 @@ add_image_size_html <- function(data, url_data) {
 
 parsed_dfs <- purrr::map2(transposed$result, url_data, add_image_size_html)
 
-
 ## Save data to tsv -----
 df_names <- purrr::map_chr(url_data, ~ .$name)
 
-purrr::walk2(transposed$result,
-             here::here("data", "original", glue::glue("{df_names}.tsv")),
+purrr::walk2(parsed_dfs,
+             here::here("data", "processed", "from_html", glue::glue("{df_names}.tsv")),
              readr::write_tsv)
 
 # Wrting to RData done in separate script
